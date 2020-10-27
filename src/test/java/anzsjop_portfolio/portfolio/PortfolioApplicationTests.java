@@ -8,7 +8,7 @@ class PortfolioApplicationTests {
 
 	@Test
 	void contextLoads() {
-		System.out.println("hehehhehe");
+		System.out.println("Hei Taavi!");
 	}
 
 }

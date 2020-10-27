@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SpotifyController {
 
     @RequestMapping("/")
-	public @ResponseBody static void greeting() {
-        System.out.println("fuckedi duck");
+	public @ResponseBody String greeting() {
+        return "Hei Taavi!";
     }
     
 }
