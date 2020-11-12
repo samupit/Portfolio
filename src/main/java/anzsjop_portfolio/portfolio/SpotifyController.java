@@ -31,10 +31,13 @@ public class SpotifyController {
     @RequestMapping("/")
     public @ResponseBody String spotifyAuthorization() {
         return getWebClientBuilder.build()
-            .method(HttpMethod.HEAD)
-            .uri("https://accounts.spotify.com/authorize?client_id=" 
-            + client_id + "&response_type=code&redirect_uri=" 
-            + redirect_uri +"&scope=user-read-private%20user-read-email&state=34fFs29kd09") 
+            .method(HttpMethod.GET)
+            .uri("https://accounts.spotify.com/authorize?"+
+                "client_id="+ client_id + 
+                "&response_type=code"+
+                "&redirect_uri="+ redirect_uri +
+                "&scope=user-read-private%20user-read-email"+
+                "&state=34fFs29kd09") 
             .accept(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.TEXT_HTML)
             .acceptCharset(Charset.forName("UTF-8"))
             .retrieve()
