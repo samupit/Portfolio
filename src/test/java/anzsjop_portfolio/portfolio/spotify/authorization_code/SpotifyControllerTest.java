@@ -1,4 +1,4 @@
-package anzsjop_portfolio.portfolio;
+package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

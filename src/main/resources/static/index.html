@@ -17,11 +17,16 @@
     </style>
   </head>
 
+  <form action= </ c:url value="/"  method="GET">
+    <input type="button" name="action" value="Log in" />
+  </form>
+
+  <form action= </ c:url value="/authorize"  method="GET">
   <body>
     <div class="container">
       <div id="login">
         <h1>First, log in to spotify</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+        <a href="/authorize" class="btn btn-primary">Log in with Spotify</a>
       </div>
       <div id="loggedin">
         <div id="user-profile">
@@ -31,9 +36,9 @@
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>
     </div>
-
+  </form>
     
-</div id="loggedin-template">
+<div id="loggedin-template">
     <h1>Logged in as </h1>
     <img id="avatar" width="200" src="" />
     <dl>

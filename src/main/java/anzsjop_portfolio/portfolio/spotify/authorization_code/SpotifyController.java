@@ -1,6 +1,5 @@
-package anzsjop_portfolio.portfolio;
+package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
-import java.nio.charset.Charset;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +8,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.client.WebClient;
-
-
 
 
 @Controller
@@ -27,35 +24,32 @@ public class SpotifyController {
     @Autowired
     WebClient.Builder getWebClientBuilder;
 
-    @GetMapping(value = "/welcome", produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/", method=RequestMethod.GET)
     @ResponseBody
-    public String welcomeAsHTML() {
-        return "<html>\n" + "<header><title>Welcome</title></header>\n" +
-          "<body>\n" + "Hello world\n" + "</body>\n" + "</html>";
+    public String logInButton() {
+        return "<html>\n" + "<header><title>Welcome to the login page </title></header>\n" +
+          "<body>\n" + "Log in\n" + "</body>\n" + "</html>";
+          
     }
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/authorize", method=RequestMethod.GET)
     public @ResponseBody String spotifyAuthorization() {
         return getWebClientBuilder.build()
             .method(HttpMethod.GET)
-            .uri("https://accounts.spotify.com/authorize?"+
+            .uri("/authorize?"+
                 "client_id="+ client_id + 
                 "&response_type=code"+
                 "&redirect_uri="+ redirect_uri) 
-          /*.accept(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.TEXT_HTML)
-            .acceptCharset(Charset.forName("UTF-8"))*/
             .retrieve()
             .bodyToMono(String.class)
             .block();
     }
 
+
     @Bean
     public WebClient.Builder getWebClientBuilder() {
         return WebClient.builder()
-        .baseUrl("http://localhost:8080")
-	    .defaultCookie("cookieKey", "cookieValue")
-	    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE) 
-	    .defaultUriVariables(Collections.singletonMap("url", "http://localhost:8080"));
+        .baseUrl("https://accounts.spotify.com");
     }
     
 }
