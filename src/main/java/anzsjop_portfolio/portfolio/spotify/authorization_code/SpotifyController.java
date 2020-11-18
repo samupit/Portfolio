@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import reactor.core.publisher.Mono;
 
 @Controller
 public class SpotifyController {
@@ -26,19 +29,27 @@ public class SpotifyController {
             .method(HttpMethod.POST)
             .uri("/api/token")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(BodyInserters.fromValue("{'grant_type': 'client_credentials'}"))
+            .body(BodyInserters.fromValue(""))
             .retrieve()
             .bodyToMono(String.class)
             .block();
+
         return response;
+    }
+
+    // Antti and Samu, here..
+    private static ExchangeFilterFunction logRequest() {
+        return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
+            return Mono.just(clientRequest);
+        });
     }
 
     @Bean
     public WebClient.Builder getWebClientBuilder() {
         return WebClient.builder()
         .baseUrl("https://accounts.spotify.com")
-        .defaultHeaders(header -> header.setBasicAuth(client_id, clientSecret));
+        .defaultHeaders(header -> header.setBasicAuth(client_id, clientSecret))
+        .filter(logRequest()); // Antti and Samu, here..
     }
-    
 }
     
