@@ -29,7 +29,7 @@ public class SpotifyController {
             .method(HttpMethod.POST)
             .uri("/api/token")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(BodyInserters.fromValue(""))
+            .body(BodyInserters.fromFormData("grant_type", "client_credentials"))
             .retrieve()
             .bodyToMono(String.class)
             .block();
