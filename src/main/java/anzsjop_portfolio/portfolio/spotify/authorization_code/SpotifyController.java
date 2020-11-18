@@ -1,13 +1,14 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
-import java.util.Base64;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Controller
@@ -19,18 +20,24 @@ public class SpotifyController {
     @Autowired
     WebClient.Builder getWebClientBuilder;
 
-    @RequestMapping(value="/spotify/token", method=RequestMethod.GET) // this is our application layer
+    @RequestMapping(value = "/spotify/token", method = RequestMethod.GET) // this is our application layer
     public @ResponseBody String spotifyAuthorization() {
-        String clientCredentials = client_id + ":" + clientSecret;
-        //private String encodedClient_id = Base64.getEncoder().encodeToString(client_id.getBytes());
-        String encodedClientCredentials = Base64.getEncoder().encodeToString(clientCredentials.getBytes());
-        return "Hello World";    
+        String response = getWebClientBuilder.build()
+            .method(HttpMethod.POST)
+            .uri("/api/token")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .body(BodyInserters.fromValue("{'grant_type': 'client_credentials'}"))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+        return response;
     }
 
     @Bean
     public WebClient.Builder getWebClientBuilder() {
         return WebClient.builder()
-        .baseUrl("https://accounts.spotify.com");
+        .baseUrl("https://accounts.spotify.com")
+        .defaultHeaders(header -> header.setBasicAuth(client_id, clientSecret));
     }
     
 }
