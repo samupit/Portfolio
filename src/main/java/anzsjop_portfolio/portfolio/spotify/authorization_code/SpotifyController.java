@@ -41,9 +41,10 @@ public class SpotifyController {
         return response;
     }
 
+    
     private static ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
-            logger.info("Querying url", clientRequest.url());
+            logger.info("Querying url {}", clientRequest.url());
             
             if (logger.isDebugEnabled()) {
                 StringBuilder sb = new StringBuilder("Request: \n");
@@ -61,9 +62,7 @@ public class SpotifyController {
         return WebClient.builder()
         .baseUrl("https://accounts.spotify.com")
         .defaultHeaders(header -> header.setBasicAuth(client_id, clientSecret))
-        .filter(logRequest()); 
+        .filter(logRequest());
     }
-
-
 }
     
