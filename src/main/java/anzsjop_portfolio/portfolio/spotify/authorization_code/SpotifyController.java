@@ -1,5 +1,7 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -16,6 +18,8 @@ import reactor.core.publisher.Mono;
 
 @Controller
 public class SpotifyController {
+
+    private static final Logger logger = LogManager.getLogger(SpotifyController.class);
 
     private static final String client_id = "c251e8621f594d1b9103deede890cbbc";
     private static final String clientSecret = "25d0dd118b3649b68a1b27f3aace65c6";
@@ -37,9 +41,17 @@ public class SpotifyController {
         return response;
     }
 
-    // Antti and Samu, here..
     private static ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
+            logger.info("Querying url", clientRequest.url());
+            
+            if (logger.isDebugEnabled()) {
+                StringBuilder sb = new StringBuilder("Request: \n");
+                clientRequest
+                  .headers()
+                  .forEach((name, values) -> values.forEach(value -> sb.append(value)));
+                logger.info(sb.toString());
+            }
             return Mono.just(clientRequest);
         });
     }
@@ -49,7 +61,9 @@ public class SpotifyController {
         return WebClient.builder()
         .baseUrl("https://accounts.spotify.com")
         .defaultHeaders(header -> header.setBasicAuth(client_id, clientSecret))
-        .filter(logRequest()); // Antti and Samu, here..
+        .filter(logRequest()); 
     }
+
+
 }
     
