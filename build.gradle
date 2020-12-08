@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id "io.gitlab.arturbosch.detekt" version "1.15.0-RC1"
 	id 'java'
 }
 
@@ -8,13 +9,9 @@ group = 'anzsjop_portfolio'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
-repositories {
-	mavenCentral()
-}
-
 dependencies {
-	compile 'org.springframework.boot:spring-boot-starter-webflux'
-	compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.apache.logging.log4j:log4j-api:2.14.0'
 	implementation 'org.apache.logging.log4j:log4j-core:2.14.0'
@@ -24,6 +21,37 @@ dependencies {
 	}
 }
 
+apply plugin: "io.gitlab.arturbosch.detekt"
+
+repositories {
+	mavenCentral()
+	jcenter {
+		content {
+			includeGroup "org.jetbrains.kotlinx"
+		}
+	}
+}
+
 test {
 	useJUnitPlatform()
+}
+
+detekt {
+    toolVersion = "1.15.0-RC1"
+    input = files("$projectDir")
+    config = files("$projectDir/config/detekt/detekt.yml")
+    reports {
+        xml {
+            enabled = true
+            destination = file("$projectDir/build/reports/detekt.xml")
+        }
+        html {
+            enabled = true
+            destination = file("$projectDir/build/reports/detekt.html")
+        }
+		txt {
+            enabled = true
+            destination = file("$projectDir/build/reports/detekt.txt")
+        }
+    }
 }
