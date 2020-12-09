@@ -65,4 +65,3 @@ public class SpotifyController {
         .filter(logRequest());
     }
 }
-    
