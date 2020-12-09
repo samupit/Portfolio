@@ -1,8 +1,8 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id "io.gitlab.arturbosch.detekt" version "1.15.0-RC1"
 	id 'java'
+    id 'checkstyle'
 }
 
 group = 'anzsjop_portfolio'
@@ -21,7 +21,7 @@ dependencies {
 	}
 }
 
-apply plugin: "io.gitlab.arturbosch.detekt"
+apply plugin: 'checkstyle'
 
 repositories {
 	mavenCentral()
@@ -36,22 +36,14 @@ test {
 	useJUnitPlatform()
 }
 
-detekt {
-    toolVersion = "1.15.0-RC1"
-    input = files("$projectDir")
-    config = files("$projectDir/config/detekt/detekt.yml")
-    reports {
-        xml {
-            enabled = true
-            destination = file("$projectDir/build/reports/detekt.xml")
-        }
-        html {
-            enabled = true
-            destination = file("$projectDir/build/reports/detekt.html")
-        }
-		txt {
-            enabled = true
-            destination = file("$projectDir/build/reports/detekt.txt")
-        }
-    }
+checkstyle {
+    configFile = file("/config/checkstyle.xml")
+}
+
+checkstyleMain {
+    source ='src/main/java'
+}
+
+checkstyleTest {
+    source ='src/test/java'
 }
