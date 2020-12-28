@@ -39,7 +39,7 @@
 
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
-    <property name="max" value="100"/>
+    <property name="max" value="150"/>
     <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
   </module>
 
@@ -165,11 +165,6 @@
       <property name="tokens" value="METHOD_REF"/>
       <property name="option" value="nl"/>
     </module>
-    <module name="PackageName">
-      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
-      <message key="name.invalidPattern"
-             value="Package name ''{0}'' must match pattern ''{1}''."/>
-    </module>
     <module name="TypeName">
       <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
                     ANNOTATION_DEF"/>
@@ -227,14 +222,7 @@
       <message key="ws.notPreceded"
              value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
     </module>
-    <module name="Indentation">
-      <property name="basicOffset" value="2"/>
-      <property name="braceAdjustment" value="2"/>
-      <property name="caseIndent" value="2"/>
-      <property name="throwsIndent" value="4"/>
-      <property name="lineWrappingIndentation" value="4"/>
-      <property name="arrayInitIndent" value="2"/>
-    </module>
+    <module name="Indentation"/>
     <module name="AbbreviationAsWordInName">
       <property name="ignoreFinal" value="false"/>
       <property name="allowedAbbreviationLength" value="0"/>
@@ -303,18 +291,6 @@
       <property name="allowMissingReturnTag" value="true"/>
       <property name="allowedAnnotations" value="Override, Test"/>
       <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF"/>
-    </module>
-    <module name="MissingJavadocMethod">
-      <property name="scope" value="public"/>
-      <property name="minLineCount" value="2"/>
-      <property name="allowedAnnotations" value="Override, Test"/>
-      <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF"/>
-    </module>
-    <module name="MissingJavadocType">
-      <property name="scope" value="protected"/>
-      <property name="tokens"
-                value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF"/>
-      <property name="excludeScope" value="nothing"/>
     </module>
     <module name="MethodName">
       <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>

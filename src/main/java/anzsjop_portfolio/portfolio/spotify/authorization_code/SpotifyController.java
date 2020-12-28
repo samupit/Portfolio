@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -49,8 +48,8 @@ public class SpotifyController {
             if (logger.isDebugEnabled()) {
                 StringBuilder sb = new StringBuilder("Request: \n");
                 clientRequest
-                  .headers()
-                  .forEach((name, values) -> values.forEach(value -> sb.append(value)));
+                    .headers()
+                    .forEach((name, values) -> values.forEach(value -> sb.append(value)));
                 logger.info(sb.toString());
             }
             return Mono.just(clientRequest);
