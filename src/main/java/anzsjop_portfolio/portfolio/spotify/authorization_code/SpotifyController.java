@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +24,9 @@ public class SpotifyController {
 
     private static final String client_id = "c251e8621f594d1b9103deede890cbbc";
     private static final String clientSecret = "25d0dd118b3649b68a1b27f3aace65c6";
+
+    @Autowired
+    SpotifyService spotifyService;
 
     @Autowired
     WebClient.Builder getWebClientBuilder;
@@ -40,6 +45,11 @@ public class SpotifyController {
         return response;
     }
 
+    @PostMapping("/spotify/token")
+    private int saveToken(@RequestBody Token token) {
+        spotifyService.saveToken(token);
+        return token.getId();
+    }
     
     private static ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
