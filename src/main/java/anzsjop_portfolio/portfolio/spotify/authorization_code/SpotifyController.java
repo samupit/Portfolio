@@ -26,13 +26,16 @@ public class SpotifyController {
     private static final String clientSecret = "25d0dd118b3649b68a1b27f3aace65c6";
 
     @Autowired
+    Token token;
+
+    @Autowired
     SpotifyService spotifyService;
 
     @Autowired
     WebClient.Builder getWebClientBuilder;
 
-    @RequestMapping(value = "/spotify/token", method = RequestMethod.GET) // this is our application layer
-    public @ResponseBody String spotifyAuthorization() {
+    @RequestMapping(value = "spotify/token", method = RequestMethod.GET)
+    public @ResponseBody Object requestAccessToken() {
         String response = getWebClientBuilder.build()
             .method(HttpMethod.POST)
             .uri("/api/token")
@@ -41,11 +44,29 @@ public class SpotifyController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
+        spotifyService.saveToken(dividingResponse(response));
 
         return response;
     }
+    
+    public @ResponseBody Token dividingResponse(String response) {
+        String[] divided = response.split(",");
+        String[] access_token = divided[0].split(":");
+        String[] token_type = divided[1].split(":");
+        String[] expires_in = divided[2].split(":");
+        String[] scope = divided[3].split(":");
 
-    @PostMapping("/spotify/token")
+        token.setAccessToken(access_token[1]);
+        token.setTokenType(token_type[1]);
+        token.setExpiresIn(Integer.valueOf(expires_in[1]));
+        token.setScope(scope[1]);
+
+        Token responseToken = new Token(access_token[1], token_type[1], Integer.valueOf(expires_in[1]), scope[1]);
+
+        return responseToken;
+    }
+
+    @RequestMapping(value = "/spotify/token", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     private int saveToken(@RequestBody Token token) {
         spotifyService.saveToken(token);
         return token.getId();
