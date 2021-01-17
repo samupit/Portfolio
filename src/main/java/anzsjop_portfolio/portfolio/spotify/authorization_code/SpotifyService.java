@@ -17,7 +17,7 @@ public class SpotifyService {
         return tokens;
     }
 
-    public Token getTokenById(int id) {
+    public Token getTokenById(Integer id) {
         return tokenRepository.findById(id).get();
     }
 
@@ -25,7 +25,7 @@ public class SpotifyService {
         tokenRepository.save(token);
     }
 
-    public void delete(int id) {
+    public void delete(Integer id) {
         tokenRepository.deleteById(id);
     }
 

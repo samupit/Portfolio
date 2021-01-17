@@ -9,7 +9,7 @@ public class Token {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     private String access_token;
     private String token_type;
     private int expires_in;
@@ -19,24 +19,24 @@ public class Token {
 		return id;
     }
 
-    public String getAccessToken(Id id) {
+    public String getAccessToken(Integer id) {
 		return access_token;
     }
 
-    public String getTokenType(Id id) {
+    public String getTokenType(Integer id) {
 		return token_type;
     }
 
-    public int getExpiresIn(Id id) {
+    public int getExpiresIn(Integer id) {
 		return expires_in;
     }
 
-    public String getScope(Id id) {
+    public String getScope(Integer id) {
 		return scope;
     }
 
-    public void setId(Id id) {
-
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setAccessToken(String access_token) {

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,7 +44,7 @@ public class SpotifyController {
         return response;
     }
 
-    @PostMapping("/spotify/token")
+    @RequestMapping(value = "/spotify/token", method = RequestMethod.POST)
     private int saveToken(@RequestBody Token token) {
         spotifyService.saveToken(token);
         return token.getId();
