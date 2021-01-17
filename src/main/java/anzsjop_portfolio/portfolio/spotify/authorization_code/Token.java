@@ -15,6 +15,15 @@ public class Token {
     private int expires_in;
     private String scope;
 
+    public Token() {
+        
+    }
+
+    public Token(String access_token) {
+        this.id = 1;
+        this.access_token = access_token;
+    }
+
 	public int getId() {
 		return id;
     }

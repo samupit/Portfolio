@@ -40,8 +40,14 @@ public class SpotifyController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
+        spotifyService.saveToken(dividingResponse(response));    
 
         return response;
+    }
+
+    public @ResponseBody Token dividingResponse(String response) {
+        Token responseToken = new Token ("safasrgdahratjnnb3q4612");
+        return responseToken;
     }
 
     @RequestMapping(value = "/spotify/token", method = RequestMethod.POST)
