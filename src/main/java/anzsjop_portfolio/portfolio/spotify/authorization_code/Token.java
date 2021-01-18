@@ -10,58 +10,58 @@ public class Token {
     @Id
     @GeneratedValue
     private Integer id;
-    private String access_token;
-    private String token_type;
-    private int expires_in;
+    private String accessToken;
+    private String tokenType;
+    private int expiresIn;
     private String scope;
 
     public Token() {
         
     }
 
-    public Token(String access_token, String token_type, int expires_in, String scope) {
+    public Token(String accessToken, String tokenType, int expiresIn, String scope) {
         this.id = 1;
-        this.access_token = access_token;
-        this.token_type = token_type;
-        this.expires_in = expires_in;
+        this.accessToken = accessToken;
+        this.tokenType = tokenType;
+        this.expiresIn = expiresIn;
         this.scope = scope;
         
     }
 
-	public int getId() {
-		return id;
+    public int getId() {
+        return id;
     }
 
     public String getAccessToken(Integer id) {
-		return access_token;
+        return accessToken;
     }
 
     public String getTokenType(Integer id) {
-		return token_type;
+        return tokenType;
     }
 
     public int getExpiresIn(Integer id) {
-		return expires_in;
+        return expiresIn;
     }
 
     public String getScope(Integer id) {
-		return scope;
+        return scope;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setAccessToken(String access_token) {
-        this.access_token = access_token;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public void setTokenType(String token_type) {
-        this.token_type = token_type;
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
     }
 
-    public void setExpiresIn(int expires_in) {
-        this.expires_in = expires_in;
+    public void setExpiresIn(int expiresIn) {
+        this.expiresIn = expiresIn;
     }
 
     public void setScope(String scope) {

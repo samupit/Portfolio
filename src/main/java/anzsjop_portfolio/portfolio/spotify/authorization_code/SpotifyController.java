@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,18 +46,19 @@ public class SpotifyController {
 
     public @ResponseBody Token dividingResponse(String response) {
         String[] divided = response.split(",");
-        String[] d_access_token = divided[0].split(":");
-        String[] d_token_type = divided[1].split(":");
-        String[] d_expires_in = divided[2].split(":");
-        String[] d_scope = divided[3].split(":");
+        String[] dividedAccessToken = divided[0].split(":");
+        String[] dividedTokenType = divided[1].split(":");
+        String[] dividedExpiresIn = divided[2].split(":");
+        String[] dividedScope = divided[3].split(":");
 
-        String access_token = d_access_token[1].trim().substring(1, (d_access_token[1].length()-1));
-        String token_type = d_token_type[1].trim().substring(1, (d_token_type[1].length()-1));
-        int expires_in = Integer.valueOf(d_expires_in[1]);
-        String scope = d_scope[1].trim().substring(1, (d_scope[1].length()-2));
+        String accessToken = dividedAccessToken[1].trim().substring(1,  dividedAccessToken[1].length() - 1);
+        String tokenType = dividedTokenType[1].trim().substring(1, (dividedTokenType[1].length() - 1));
+        int expiresIn = Integer.valueOf(dividedExpiresIn[1]);
+        String scope = dividedScope[1].trim().substring(1, (dividedScope[1].length() - 2));
 
-        Token responseToken = new Token (access_token, token_type, expires_in, scope);
+        Token responseToken = new Token(accessToken, tokenType, expiresIn, scope);
         return responseToken;
+
     }
     
     private static ExchangeFilterFunction logRequest() {

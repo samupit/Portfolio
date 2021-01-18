@@ -1,7 +1,6 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
 import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
