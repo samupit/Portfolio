@@ -60,12 +60,6 @@ public class SpotifyController {
         Token responseToken = new Token (access_token, token_type, expires_in, scope);
         return responseToken;
     }
-
-    @RequestMapping(value = "/spotify/token", method = RequestMethod.POST)
-    private int saveToken(@RequestBody Token token) {
-        spotifyService.saveToken(token);
-        return token.getId();
-    }
     
     private static ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
