@@ -19,9 +19,10 @@ public class Token {
         
     }
 
-    public Token(String access_token) {
+    public Token(String access_token, String token_type) {
         this.id = 1;
         this.access_token = access_token;
+        this.token_type = token_type;
     }
 
 	public int getId() {
