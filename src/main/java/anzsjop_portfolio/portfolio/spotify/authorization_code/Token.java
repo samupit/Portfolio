@@ -25,6 +25,7 @@ public class Token {
         this.token_type = token_type;
         this.expires_in = expires_in;
         this.scope = scope;
+        
     }
 
 	public int getId() {
@@ -41,6 +42,10 @@ public class Token {
 
     public int getExpiresIn(Integer id) {
 		return expires_in;
+    }
+
+    public String getScope(Integer id) {
+		return scope;
     }
 
     public void setId(Integer id) {

@@ -51,8 +51,8 @@ public class SpotifyController {
         String[] token_type = divided[1].split(":");
         String[] expires_in = divided[2].split(":");
         String[] scope = divided[3].split(":");
-        
-        Token responseToken = new Token ("safasrgdahratjnnb3q4612", "asdsfgagd", 500, "");
+
+        Token responseToken = new Token (access_token[1], token_type[1], Integer.valueOf(expires_in[1]), scope[1]);
         return responseToken;
     }
 
