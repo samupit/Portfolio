@@ -19,11 +19,12 @@ public class Token {
         
     }
 
-    public Token(String access_token, String token_type, int expires_in) {
+    public Token(String access_token, String token_type, int expires_in, String scope) {
         this.id = 1;
         this.access_token = access_token;
         this.token_type = token_type;
         this.expires_in = expires_in;
+        this.scope = scope;
     }
 
 	public int getId() {
