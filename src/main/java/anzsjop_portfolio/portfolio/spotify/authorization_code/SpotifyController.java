@@ -46,7 +46,7 @@ public class SpotifyController {
     }
 
     public @ResponseBody Token dividingResponse(String response) {
-        Token responseToken = new Token ("safasrgdahratjnnb3q4612", "asdsfgagd");
+        Token responseToken = new Token ("safasrgdahratjnnb3q4612", "asdsfgagd", 500);
         return responseToken;
     }
 
