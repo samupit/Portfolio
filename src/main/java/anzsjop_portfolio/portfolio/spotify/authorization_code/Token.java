@@ -43,10 +43,6 @@ public class Token {
 		return expires_in;
     }
 
-    public String getScope(Integer id) {
-		return scope;
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
