@@ -47,12 +47,17 @@ public class SpotifyController {
 
     public @ResponseBody Token dividingResponse(String response) {
         String[] divided = response.split(",");
-        String[] access_token = divided[0].split(":");
-        String[] token_type = divided[1].split(":");
-        String[] expires_in = divided[2].split(":");
-        String[] scope = divided[3].split(":");
+        String[] d_access_token = divided[0].split(":");
+        String[] d_token_type = divided[1].split(":");
+        String[] d_expires_in = divided[2].split(":");
+        String[] d_scope = divided[3].split(":");
 
-        Token responseToken = new Token (access_token[1], token_type[1], Integer.valueOf(expires_in[1]), scope[1]);
+        String access_token = d_access_token[1].trim().substring(1, (d_access_token[1].length()-1));
+        String token_type = d_token_type[1].trim().substring(1, (d_token_type[1].length()-1));
+        int expires_in = Integer.valueOf(d_expires_in[1]);
+        String scope = d_scope[1].trim().substring(1, (d_scope[1].length()-2));
+
+        Token responseToken = new Token (access_token, token_type, expires_in, scope);
         return responseToken;
     }
 
