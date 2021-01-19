@@ -1,6 +1,7 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -28,6 +29,7 @@ public class SpotifyControllerTest {
 
     @Test
     public void shouldReceiveToken() throws Exception {
+        when(spotifyController.spotifyAuthorization()).thenReturn(token);
         this.mockMvc.perform(get("/spotify/token"))
             .andDo(print())
             .andExpect(status().isOk())
