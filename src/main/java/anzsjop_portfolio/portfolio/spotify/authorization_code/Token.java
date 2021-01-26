@@ -27,7 +27,7 @@ public class Token {
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
         this.scope = scope;
-        this.expirationTime = LocalDateTime.now();
+        this.expirationTime = LocalDateTime.now().plusSeconds(expiresIn);
         
     }
 
