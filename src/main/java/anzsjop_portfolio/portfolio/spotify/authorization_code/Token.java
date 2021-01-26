@@ -18,9 +18,8 @@ public class Token {
     public Token() {
         
     }
-
+    //ToDo juokseva id ja expire date
     public Token(String accessToken, String tokenType, int expiresIn, String scope) {
-        this.id = 1;
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
@@ -28,7 +27,7 @@ public class Token {
         
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

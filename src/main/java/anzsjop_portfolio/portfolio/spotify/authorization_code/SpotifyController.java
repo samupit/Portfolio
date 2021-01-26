@@ -44,6 +44,7 @@ public class SpotifyController {
         return response;
     }
 
+    // ToDo String to JSON jackson
     public @ResponseBody Token dividingResponse(String response) {
         String[] divided = response.split(",");
         String[] dividedAccessToken = divided[0].split(":");
