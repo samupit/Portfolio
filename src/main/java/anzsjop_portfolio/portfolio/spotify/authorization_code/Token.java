@@ -1,5 +1,7 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +16,7 @@ public class Token {
     private String tokenType;
     private int expiresIn;
     private String scope;
+    private LocalDateTime expirationTime;
 
     public Token() {
         
@@ -24,6 +27,7 @@ public class Token {
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
         this.scope = scope;
+        this.expirationTime = LocalDateTime.now();
         
     }
 
