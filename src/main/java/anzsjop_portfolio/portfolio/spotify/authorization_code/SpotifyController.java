@@ -1,6 +1,10 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +36,28 @@ public class SpotifyController {
 
     @RequestMapping(value = "/spotify/token", method = RequestMethod.GET) // this is our application layer
     public @ResponseBody String spotifyAuthorization() {
-        String response = getWebClientBuilder.build()
-            .method(HttpMethod.POST)
-            .uri("/api/token")
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(BodyInserters.fromFormData("grant_type", "client_credentials"))
-            .retrieve()
-            .bodyToMono(String.class)
-            .block();
-        spotifyService.saveToken(dividingResponse(response));    
+        spotifyService.getAllTokens();
+        String response = "null";
+        for (int i = 1; i < 2; i++) {
+            if (spotifyService.getAllTokens().isEmpty() || spotifyService.getTokenById(i).getExpirationTime(i).compareTo(LocalDateTime.now()) < 0) {
+                response = getWebClientBuilder.build()
+                    .method(HttpMethod.POST)
+                    .uri("/api/token")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData("grant_type", "client_credentials"))
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+                spotifyService.saveToken(dividingResponse(response));
+            } else {
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    response = mapper.writeValueAsString(spotifyService.getTokenById(i));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }    
 
         return response;
     }
