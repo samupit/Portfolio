@@ -51,6 +51,10 @@ public class Token {
         return scope;
     }
 
+    public LocalDateTime getExpirationTime(Integer id) {
+        return expirationTime;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -69,6 +73,10 @@ public class Token {
 
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    public void setExpirationTime(LocalDateTime expirationTime) {
+        this.expirationTime = expirationTime;
     }
 
 }

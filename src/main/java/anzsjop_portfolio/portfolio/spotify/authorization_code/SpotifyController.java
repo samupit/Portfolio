@@ -1,5 +1,6 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
+import java.time.LocalDateTime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,8 @@ public class SpotifyController {
         String scope = dividedScope[1].trim().substring(1, (dividedScope[1].length() - 2));
 
         Token responseToken = new Token(accessToken, tokenType, expiresIn, scope);
+        final int diff = responseToken.getExpirationTime(1).compareTo(LocalDateTime.now());
+        System.out.println(diff);
         return responseToken;
 
     }
