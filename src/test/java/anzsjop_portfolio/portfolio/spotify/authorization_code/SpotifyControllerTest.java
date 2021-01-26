@@ -26,10 +26,11 @@ public class SpotifyControllerTest {
     private SpotifyController spotifyController;
 
     private String token = "{\"access_token\":\"BQDlPBW4yeqDKbfLMGb7jrEAIj9gc770\",\"token_type\":\"Bearer\",\"expires_in\":3600,\"scope\":\"\"}";
-
+    
+    
     @Test
     public void shouldReceiveToken() throws Exception {
-        when(spotifyController.spotifyAuthorization()).thenReturn(token);
+        when(spotifyController.requestAndSaveAccessToken());
         this.mockMvc.perform(get("/spotify/token"))
             .andDo(print())
             .andExpect(status().isOk())

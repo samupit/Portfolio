@@ -35,31 +35,39 @@ public class SpotifyController {
     WebClient.Builder getWebClientBuilder;
 
     @RequestMapping(value = "/spotify/token", method = RequestMethod.GET) // this is our application layer
-    public @ResponseBody String spotifyAuthorization() {
-        spotifyService.getAllTokens();
-        String response = "null";
-        for (int i = 1; i < 2; i++) {
-            if (spotifyService.getAllTokens().isEmpty() || spotifyService.getTokenById(i).getExpirationTime(i).compareTo(LocalDateTime.now()) < 0) {
-                response = getWebClientBuilder.build()
-                    .method(HttpMethod.POST)
-                    .uri("/api/token")
-                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                    .body(BodyInserters.fromFormData("grant_type", "client_credentials"))
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-                spotifyService.saveToken(dividingResponse(response));
-            } else {
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    response = mapper.writeValueAsString(spotifyService.getTokenById(i));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }    
+    public @ResponseBody Token spotifyAuthorization() {
+        Token accessToken = new Token();
+        if (spotifyService.getAllTokens().isEmpty()) {
+            accessToken = requestAndSaveAccessToken();
+        }
 
-        return response;
+        for (int i = 1; i <= spotifyService.getAllTokens().size() ; i++) {
+            if (spotifyService.getTokenById(i).getExpirationTime(i).compareTo(LocalDateTime.now()) < 0){
+                accessToken = requestAndSaveAccessToken();
+            }
+        }
+
+        for (int i = 1; i <= spotifyService.getAllTokens().size() ; i++) {
+            if (spotifyService.getTokenById(i).getExpirationTime(i).compareTo(LocalDateTime.now()) > 0)
+            accessToken = spotifyService.getTokenById(i);
+        }
+        
+        return accessToken;
+    }
+
+    public @ResponseBody Token requestAndSaveAccessToken() {
+        String response = getWebClientBuilder.build()
+            .method(HttpMethod.POST)
+            .uri("/api/token")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .body(BodyInserters.fromFormData("grant_type", "client_credentials"))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+        Token responseToken = dividingResponse(response);
+        spotifyService.saveToken(responseToken);
+
+        return responseToken;
     }
 
     // ToDo String to JSON jackson
