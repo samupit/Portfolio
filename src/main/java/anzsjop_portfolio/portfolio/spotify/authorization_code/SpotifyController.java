@@ -1,6 +1,13 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +55,7 @@ public class SpotifyController {
     }
 
     public @ResponseBody Token requestAndSaveAccessToken() {
-        String response = getWebClientBuilder.build()
+        String jsonResponse = getWebClientBuilder.build()
             .method(HttpMethod.POST)
             .uri("/api/token")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -56,32 +63,31 @@ public class SpotifyController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        Token responseToken = dividingResponse(response);
+        Token responseToken = new Token(jsonStringToMap(jsonResponse));
         spotifyService.saveToken(responseToken);
 
         return responseToken;
     }
 
-    // ToDo String to JSON jackson
-    public @ResponseBody Token dividingResponse(String response) {
-        String[] divided = response.split(",");
-        String[] dividedAccessToken = divided[0].split(":");
-        String[] dividedTokenType = divided[1].split(":");
-        String[] dividedExpiresIn = divided[2].split(":");
-        String[] dividedScope = divided[3].split(":");
+    public HashMap<String, Object> jsonStringToMap(String jsonResponse) {
+        ObjectMapper mapper = new ObjectMapper();
+        HashMap<String, Object> accessTokenHashMap = new HashMap<String, Object>();
+        try {
+            accessTokenHashMap = mapper.readValue(jsonResponse, new TypeReference<HashMap<String, Object>>() {});
+            System.out.println(accessTokenHashMap);
+            System.out.println("using entrySet and manual string creation");
 
-        String accessToken = dividedAccessToken[1].trim().substring(1,  dividedAccessToken[1].length() - 1);
-        String tokenType = dividedTokenType[1].trim().substring(1, (dividedTokenType[1].length() - 1));
-        int expiresIn = Integer.valueOf(dividedExpiresIn[1]);
-        String scope = dividedScope[1].trim().substring(1, (dividedScope[1].length() - 2));
+            for (Entry<String, Object> entry : accessTokenHashMap.entrySet()) {
+                System.out.println(entry.getValue());
+            }
 
-        Token responseToken = new Token(accessToken, tokenType, expiresIn, scope);
-        final int diff = responseToken.getExpirationTime(1).compareTo(LocalDateTime.now());
-        System.out.println(diff);
-        return responseToken;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        return accessTokenHashMap;
     }
-    
+
     private static ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
             logger.info("Querying url {}", clientRequest.url());

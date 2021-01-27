@@ -15,7 +15,7 @@ public class SpotifyServiceTest {
 
     @Test
     public void shouldGetTokenById() throws Exception {
-        Token token = new Token("a32a46fa34675d34sf734g84a8g", "Bearer", 3600, " ");
+        Token token = new Token();
         spotifyService.saveToken(token);
         System.out.println(spotifyService.getTokenById(1).toString());
     }
