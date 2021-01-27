@@ -1,7 +1,6 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,22 +11,22 @@ public class Token {
     @Id
     @GeneratedValue
     private Integer id;
-    private String accessToken;
-    private String tokenType;
-    private int expiresIn;
+    private String access_token;
+    private String token_type;
+    private int expires_in;
     private String scope;
-    private LocalDateTime expirationTime;
+    private LocalDateTime expiration_time;
 
     public Token() {
         
     }
-    //ToDo juokseva id ja expire date
-    public Token(String accessToken, String tokenType, int expiresIn, String scope) {
-        this.accessToken = accessToken;
-        this.tokenType = tokenType;
-        this.expiresIn = expiresIn;
+
+    public Token(String access_token, String token_type, int expires_in, String scope) {
+        this.access_token = access_token;
+        this.token_type = token_type;
+        this.expires_in = expires_in;
         this.scope = scope;
-        this.expirationTime = LocalDateTime.now().plusSeconds(expiresIn);
+        this.expiration_time = LocalDateTime.now().plusSeconds(expires_in);
         
     }
 
@@ -36,15 +35,15 @@ public class Token {
     }
 
     public String getAccessToken(Integer id) {
-        return accessToken;
+        return access_token;
     }
 
     public String getTokenType(Integer id) {
-        return tokenType;
+        return token_type;
     }
 
     public int getExpiresIn(Integer id) {
-        return expiresIn;
+        return expires_in;
     }
 
     public String getScope(Integer id) {
@@ -52,31 +51,31 @@ public class Token {
     }
 
     public LocalDateTime getExpirationTime(Integer id) {
-        return expirationTime;
+        return expiration_time;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setAccessToken(String access_token) {
+        this.access_token = access_token;
     }
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+    public void setTokenType(String token_type) {
+        this.token_type = token_type;
     }
 
-    public void setExpiresIn(int expiresIn) {
-        this.expiresIn = expiresIn;
+    public void setExpiresIn(int expires_in) {
+        this.expires_in = expires_in;
     }
 
     public void setScope(String scope) {
         this.scope = scope;
     }
 
-    public void setExpirationTime(LocalDateTime expirationTime) {
-        this.expirationTime = expirationTime;
+    public void setExpirationTime(LocalDateTime expiration_time) {
+        this.expiration_time = expiration_time;
     }
 
 }

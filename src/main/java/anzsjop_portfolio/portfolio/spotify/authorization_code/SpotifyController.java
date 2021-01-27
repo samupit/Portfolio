@@ -1,10 +1,6 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +36,9 @@ public class SpotifyController {
         int latestTokenId = spotifyService.getAllTokens().size();
         if (spotifyService.getAllTokens().isEmpty()) {
             accessToken = requestAndSaveAccessToken();
-        } else if (spotifyService.getTokenById(latestTokenId).getExpirationTime(latestTokenId).compareTo(LocalDateTime.now()) <= 0){
+        } else if (spotifyService.getTokenById(latestTokenId)
+            .getExpirationTime(latestTokenId)
+            .compareTo(LocalDateTime.now()) <= 0) {
             accessToken = requestAndSaveAccessToken();
         } else {
             accessToken = spotifyService.getTokenById(latestTokenId);
