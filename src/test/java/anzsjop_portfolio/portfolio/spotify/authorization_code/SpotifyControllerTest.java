@@ -30,7 +30,7 @@ public class SpotifyControllerTest {
     
     @Test
     public void shouldReceiveToken() throws Exception {
-        when(spotifyController.requestAndSaveAccessToken());
+        when(spotifyController.spotifyAuthorization());
         this.mockMvc.perform(get("/spotify/token"))
             .andDo(print())
             .andExpect(status().isOk())
