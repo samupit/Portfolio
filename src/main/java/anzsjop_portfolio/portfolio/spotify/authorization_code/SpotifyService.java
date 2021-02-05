@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.Map.Entry;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import reactor.core.publisher.Mono;
 
 @Service
@@ -75,13 +71,6 @@ public class SpotifyService {
         HashMap<String, Object> accessTokenHashMap = new HashMap<String, Object>();
         try {
             accessTokenHashMap = mapper.readValue(jsonResponse, new TypeReference<HashMap<String, Object>>() {});
-            System.out.println(accessTokenHashMap);
-            System.out.println("using entrySet and manual string creation");
-
-            for (Entry<String, Object> entry : accessTokenHashMap.entrySet()) {
-                System.out.println(entry.getValue());
-            }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
