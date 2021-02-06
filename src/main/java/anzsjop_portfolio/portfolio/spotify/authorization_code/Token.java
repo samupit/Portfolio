@@ -2,7 +2,6 @@ package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

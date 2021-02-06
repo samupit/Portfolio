@@ -13,9 +13,10 @@ public class SpotifyServiceTest {
     @Autowired
     private SpotifyService spotifyService;
 
+    Token token = new Token();
+
     @Test
     public void shouldGetTokenById() throws Exception {
-        Token token = new Token();
         spotifyService.saveToken(token);
         System.out.println(spotifyService.getTokenById(1).toString());
     }
