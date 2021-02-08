@@ -6,16 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Controller
 public class SpotifyController {
 
     @Autowired
     SpotifyService spotifyService;
-
-    @Autowired
-    WebClient.Builder getWebClientBuilder;
 
     @RequestMapping(value = "/spotify/token", method = RequestMethod.GET) // this is our application layer
     public @ResponseBody Token spotifyAuthorization() {
