@@ -22,6 +22,14 @@ public class Token {
         
     }
 
+    public Token(String access_token, String token_type, int expires_in, String scope) {
+        this.access_token = access_token;
+        this.token_type = token_type;
+        this.expires_in = expires_in;
+        this.scope = scope;
+        this.expiration_time = LocalDateTime.now().plusSeconds(expires_in);
+    }
+
     public Token(HashMap<String, Object> map) {
         this.access_token = map.get("access_token").toString();
         this.token_type = map.get("token_type").toString();
