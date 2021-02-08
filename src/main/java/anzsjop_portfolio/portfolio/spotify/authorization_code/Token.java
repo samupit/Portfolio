@@ -35,23 +35,23 @@ public class Token {
         return id;
     }
 
-    public String getAccessToken(Integer id) {
+    public String getAccessToken() {
         return access_token;
     }
 
-    public String getTokenType(Integer id) {
+    public String getTokenType() {
         return token_type;
     }
 
-    public int getExpiresIn(Integer id) {
+    public int getExpiresIn() {
         return expires_in;
     }
 
-    public String getScope(Integer id) {
+    public String getScope() {
         return scope;
     }
 
-    public LocalDateTime getExpirationTime(Integer id) {
+    public LocalDateTime getExpirationTime() {
         return expiration_time;
     }
 

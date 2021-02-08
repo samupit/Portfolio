@@ -23,7 +23,7 @@ public class SpotifyController {
         if (spotifyService.getAllTokens().isEmpty()) {
             accessToken = spotifyService.requestAndSaveAccessToken();
         } else if (spotifyService.getNewestToken()
-            .getExpirationTime(spotifyService.getNewestToken().getId())
+            .getExpirationTime()
             .compareTo(LocalDateTime.now()) <= 0) {
             accessToken = spotifyService.requestAndSaveAccessToken();
         } else {
