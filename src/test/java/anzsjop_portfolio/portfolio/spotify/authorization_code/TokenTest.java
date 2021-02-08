@@ -2,22 +2,19 @@ package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
 
 public class TokenTest {
 
+    @Autowired
+    ApplicationContext context;
+
+    @MockBean
+    private Token tokenMock;
+
     Token token = new Token();
-
-    @Test
-    public void shouldGetTokenById() throws Exception {
-        Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
-
-        Token token1 = Mockito.spy(token);
-
-        Mockito.doReturn(token).when(token1);
-
-        Assertions.assertEquals(token, token1);
-    }
 
     @Test
     public void shouldSetAndGetAccessToken() throws Exception {
@@ -25,6 +22,30 @@ public class TokenTest {
 
         token.getAccessToken();
         Assertions.assertEquals("fdsgahdfshsgjsh436514362547", token.getAccessToken());
+    }
+
+    @Test
+    public void shouldSetAndGetTokenType() throws Exception {
+        token.setTokenType("Bearer");
+
+        token.getTokenType();
+        Assertions.assertEquals("Bearer", token.getTokenType());
+    }
+
+    @Test
+    public void shouldSetAndGetExpiresIn() throws Exception {
+        token.setExpiresIn(35345);
+
+        token.getExpiresIn();
+        Assertions.assertEquals(35345, token.getExpiresIn());
+    }
+
+    @Test
+    public void shouldSetAndGetScope() throws Exception {
+        token.setScope("dgadfhsfg");
+
+        token.getScope();
+        Assertions.assertEquals("dgadfhsfg", token.getScope());
     }
 
 }
