@@ -11,13 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 @AutoConfigureMockMvc
 
-public class ApplicationTests {
+public class ApplicationTest {
 
     @Autowired
     private SpotifyController spotifyController;
 
     @Test
-    public void shouldDisplayLoginPage() throws Exception {
+    public void shouldNotBeNull() throws Exception {
         assertThat(spotifyController).isNotNull();
     }
 
