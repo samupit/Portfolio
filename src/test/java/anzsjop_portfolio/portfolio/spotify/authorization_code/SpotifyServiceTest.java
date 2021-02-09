@@ -1,6 +1,7 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -86,14 +87,19 @@ public class SpotifyServiceTest {
     @Test
     public void shouldGetAllTokens() throws Exception {
         Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
+        Token token1 = new Token("asagq4thq487tafadgah9rzjkhdfvb8asdg0", "Bearer", 3600, "");
 
-        Mockito.when(spotifyServiceMock.requestAndSaveAccessToken()).thenReturn(token);
+        ArrayList<Token> tokens = new ArrayList<Token>();
+        tokens.add(token);
+        tokens.add(token1);
+
+        Mockito.when(spotifyServiceMock.getAllTokens()).thenReturn(tokens);
         SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
         
-        Token token1 = spotifyServiceFromContext.requestAndSaveAccessToken();
+        ArrayList<Token> tokens1 = spotifyServiceFromContext.getAllTokens();
 
-        Assertions.assertEquals(token, token1);
-        Mockito.verify(spotifyServiceMock).requestAndSaveAccessToken();
+        Assertions.assertEquals(tokens, tokens1);
+        Mockito.verify(spotifyServiceMock).getAllTokens();
     }
 
 }
