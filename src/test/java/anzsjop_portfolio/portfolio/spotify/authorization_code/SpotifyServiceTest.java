@@ -1,8 +1,5 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +20,7 @@ public class SpotifyServiceTest {
     private SpotifyService spotifyServiceMock;
     
     @Test
-    public void shouldGetTokenById() throws Exception {
+    public void shouldGetTokenById() {
         Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
 
         Mockito.when(spotifyServiceMock.getTokenById(1)).thenReturn(token);
@@ -36,7 +33,7 @@ public class SpotifyServiceTest {
     }
 
     @Test
-    public void shouldGetNewestToken() throws Exception {
+    public void shouldGetNewestToken() {
         Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
 
         Mockito.when(spotifyServiceMock.getNewestToken()).thenReturn(token);
@@ -49,7 +46,7 @@ public class SpotifyServiceTest {
     }
 
     @Test
-    public void shouldRequestAndSaveAccessToken() throws Exception {
+    public void shouldRequestAndSaveAccessToken() {
         Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
 
         Mockito.when(spotifyServiceMock.requestAndSaveAccessToken()).thenReturn(token);
@@ -62,28 +59,63 @@ public class SpotifyServiceTest {
     }
 
     @Test
-    public void shouldChangeJsonStringToMap() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonResponse = "{\"access_token\":\"BQDlPBW4yeqDKbfLMGb7jrEAIj9gc770\",\"token_type\":\"Bearer\",\"expires_in\":3600,\"scope\":\"\"}";
-        HashMap<String, Object> accessTokenHashMap = new HashMap<String, Object>();
-        try {
-            accessTokenHashMap = mapper.readValue(jsonResponse, new TypeReference<HashMap<String, Object>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void shouldFailWhenMapsDiffer() {
+        String jsonResponse = "";
+        HashMap<String, Object> accessTokenHashMapWithDifferentTime = defaultAccessTokenHashMapWithDifferentTime();
 
-        Mockito.when(spotifyServiceMock.jsonStringToMap(jsonResponse)).thenReturn(accessTokenHashMap);
+        Mockito.when(spotifyServiceMock.jsonStringToMap(jsonResponse)).thenReturn(accessTokenHashMapWithDifferentTime);
+
         SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
-        
         HashMap<String, Object> accessTokenHashMap1 = spotifyServiceFromContext
             .jsonStringToMap(jsonResponse);
-
-        Assertions.assertEquals(accessTokenHashMap, accessTokenHashMap1);
+        
+        HashMap<String, Object> defaultMap = defaultAccessTokenHashMap();
+        Assertions.assertEquals(accessTokenHashMap1, defaultMap);
         Mockito.verify(spotifyServiceMock).jsonStringToMap(jsonResponse);
     }
 
     @Test
-    public void shouldGetAllTokens() throws Exception {
+    public void shouldChangeJsonStringToMap() {
+        String jsonResponse = "";
+        HashMap<String, Object> accessTokenHashMap = new HashMap<>();
+        accessTokenHashMap.put("access_token", "BQDlPBW4yeqDKbfLMGb7jrEAIj9gc770");
+        accessTokenHashMap.put("token_type", "Bearer");
+        accessTokenHashMap.put("expires_in", "3600");
+        accessTokenHashMap.put("scope", "");
+
+        Mockito.when(spotifyServiceMock.jsonStringToMap(jsonResponse)).thenReturn(accessTokenHashMap);
+
+        SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
+        HashMap<String, Object> accessTokenHashMap1 = spotifyServiceFromContext
+            .jsonStringToMap(jsonResponse);
+        
+        HashMap<String, Object> defaultMap = defaultAccessTokenHashMap();
+        Assertions.assertEquals(accessTokenHashMap1, defaultMap);
+        Mockito.verify(spotifyServiceMock).jsonStringToMap(jsonResponse);
+    }
+
+    public HashMap<String, Object> defaultAccessTokenHashMap() {
+        HashMap<String, Object> accessTokenHashMap = new HashMap<>();
+        accessTokenHashMap.put("access_token", "BQDlPBW4yeqDKbfLMGb7jrEAIj9gc770");
+        accessTokenHashMap.put("token_type", "Bearer");
+        accessTokenHashMap.put("expires_in", "3600");
+        accessTokenHashMap.put("scope", "");
+
+        return accessTokenHashMap;
+    }
+
+    public HashMap<String, Object> defaultAccessTokenHashMapWithDifferentTime() {
+        HashMap<String, Object> accessTokenHashMap = new HashMap<>();
+        accessTokenHashMap.put("access_token", "BQDlPBW4yeqDKbfLMGb7jrEAIj9gc770");
+        accessTokenHashMap.put("token_type", "Bearer");
+        accessTokenHashMap.put("expires_in", "600");
+        accessTokenHashMap.put("scope", "");
+
+        return accessTokenHashMap;
+    }
+
+    @Test
+    public void shouldGetAllTokens() {
         Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
         Token token1 = new Token("asagq4thq487tafadgah9rzjkhdfvb8asdg0", "Bearer", 3600, "");
 
@@ -93,11 +125,59 @@ public class SpotifyServiceTest {
 
         Mockito.when(spotifyServiceMock.getAllTokens()).thenReturn(tokens);
         SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
+        ArrayList<Token> tokens1 = spotifyServiceFromContext
+            .getAllTokens();
         
-        ArrayList<Token> tokens1 = spotifyServiceFromContext.getAllTokens();
+        ArrayList<Token> defaultList = getDefaultTokenList();
+        Assertions.assertTrue(areArrayListsEqual(tokens1, defaultList));
 
-        Assertions.assertEquals(tokens, tokens1);
         Mockito.verify(spotifyServiceMock).getAllTokens();
+    }
+
+    @Test
+    public void shouldFailWhenTokenListsDiffer() {
+        ArrayList<Token> tokensWithDifferentTimes = getDefaultTokenListWithDifferentTime();
+
+        Mockito.when(spotifyServiceMock.getAllTokens()).thenReturn(tokensWithDifferentTimes);
+        SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
+        ArrayList<Token> tokens1 = spotifyServiceFromContext
+            .getAllTokens();
+        
+        ArrayList<Token> defaultList = getDefaultTokenList();
+
+        Assertions.assertTrue(areArrayListsEqual(tokens1, defaultList));
+        Mockito.verify(spotifyServiceMock).getAllTokens();
+    }
+
+    public ArrayList<Token> getDefaultTokenList() {
+        Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
+        Token token1 = new Token("asagq4thq487tafadgah9rzjkhdfvb8asdg0", "Bearer", 3600, "");
+        ArrayList<Token> defaultList = new ArrayList<Token>();
+        defaultList.add(token);
+        defaultList.add(token1);
+        return defaultList;
+    }
+
+    public ArrayList<Token> getDefaultTokenListWithDifferentTime() {
+        Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 600, "");
+        Token token1 = new Token("asagq4thq487tafadgah9rzjkhdfvb8asdg0", "Bearer", 600, "");
+        ArrayList<Token> defaultListWithDifferentTime = new ArrayList<Token>();
+        defaultListWithDifferentTime.add(token);
+        defaultListWithDifferentTime.add(token1);
+        return defaultListWithDifferentTime;
+    }
+
+    public boolean areArrayListsEqual(ArrayList<Token> list1, ArrayList<Token> list2) {
+        for (int i = 0; i < list1.size(); i++) {
+            if (list1.get(i).getAccessToken() == list2.get(i).getAccessToken() 
+                && list1.get(i).getTokenType() == list2.get(i).getTokenType() 
+                && list1.get(i).getExpiresIn() == list2.get(i).getExpiresIn()
+                && list1.get(i).getScope() == list2.get(i).getScope()) {
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
