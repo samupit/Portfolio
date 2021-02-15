@@ -25,8 +25,8 @@ public class SpotifyService {
 
     private static final Logger logger = LogManager.getLogger(SpotifyController.class);
 
-    private static final String client_id = "c251e8621f594d1b9103deede890cbbc";
-    private static final String clientSecret = "25d0dd118b3649b68a1b27f3aace65c6";
+    private static final String client_id = "your_own_client_id";
+    private static final String clientSecret = "your_own_client_secret";
     
     @Autowired
     TokenRepository tokenRepository;

@@ -76,12 +76,12 @@ public class SpotifyServiceTest {
 
     @Test
     public void shouldChangeJsonStringToMap() {
-        String jsonResponse = "";
         HashMap<String, Object> accessTokenHashMap = new HashMap<>();
         accessTokenHashMap.put("access_token", "BQDlPBW4yeqDKbfLMGb7jrEAIj9gc770");
         accessTokenHashMap.put("token_type", "Bearer");
         accessTokenHashMap.put("expires_in", "3600");
         accessTokenHashMap.put("scope", "");
+        String jsonResponse = "";
 
         Mockito.when(spotifyServiceMock.jsonStringToMap(jsonResponse)).thenReturn(accessTokenHashMap);
 
@@ -155,6 +155,7 @@ public class SpotifyServiceTest {
         ArrayList<Token> defaultList = new ArrayList<Token>();
         defaultList.add(token);
         defaultList.add(token1);
+
         return defaultList;
     }
 
@@ -164,6 +165,7 @@ public class SpotifyServiceTest {
         ArrayList<Token> defaultListWithDifferentTime = new ArrayList<Token>();
         defaultListWithDifferentTime.add(token);
         defaultListWithDifferentTime.add(token1);
+        
         return defaultListWithDifferentTime;
     }
 
@@ -173,6 +175,7 @@ public class SpotifyServiceTest {
                 && list1.get(i).getTokenType() == list2.get(i).getTokenType() 
                 && list1.get(i).getExpiresIn() == list2.get(i).getExpiresIn()
                 && list1.get(i).getScope() == list2.get(i).getScope()) {
+                continue;
             } else {
                 return false;
             }
