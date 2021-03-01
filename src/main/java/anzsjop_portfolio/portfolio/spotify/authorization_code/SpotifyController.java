@@ -16,7 +16,7 @@ public class SpotifyController {
     @RequestMapping(value = "/spotify/token", method = RequestMethod.GET) // this is our application layer
     public @ResponseBody Token spotifyAuthorization() {
         Token accessToken = new Token();
-        if (spotifyService.getAllTokens().isEmpty()) {
+        if (spotifyService.getNewestToken() == null) {
             accessToken = spotifyService.requestAndSaveAccessToken();
         } else if (spotifyService.getNewestToken()
             .getExpirationTime()

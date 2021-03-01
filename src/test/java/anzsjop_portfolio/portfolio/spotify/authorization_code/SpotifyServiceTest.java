@@ -1,6 +1,5 @@
 package anzsjop_portfolio.portfolio.spotify.authorization_code;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,19 +17,6 @@ public class SpotifyServiceTest {
 
     @MockBean
     private SpotifyService spotifyServiceMock;
-    
-    @Test
-    public void shouldGetTokenById() {
-        Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
-
-        Mockito.when(spotifyServiceMock.getTokenById(1)).thenReturn(token);
-        SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
-        
-        Token token1 = spotifyServiceFromContext.getTokenById(1);
-
-        Assertions.assertEquals(token, token1);
-        Mockito.verify(spotifyServiceMock).getTokenById(1);
-    }
 
     @Test
     public void shouldGetNewestToken() {
@@ -42,6 +28,17 @@ public class SpotifyServiceTest {
         Token token1 = spotifyServiceFromContext.getNewestToken();
 
         Assertions.assertEquals(token, token1);
+        Mockito.verify(spotifyServiceMock).getNewestToken();
+    }
+
+    @Test
+    public void shouldGetNullWhenNoTokensExist() {
+        Mockito.when(spotifyServiceMock.getNewestToken()).thenReturn(null);
+        SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
+        
+        Token token1 = spotifyServiceFromContext.getNewestToken();
+
+        Assertions.assertEquals(null, token1);
         Mockito.verify(spotifyServiceMock).getNewestToken();
     }
 
@@ -112,75 +109,6 @@ public class SpotifyServiceTest {
         accessTokenHashMap.put("scope", "");
 
         return accessTokenHashMap;
-    }
-
-    @Test
-    public void shouldGetAllTokens() {
-        Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
-        Token token1 = new Token("asagq4thq487tafadgah9rzjkhdfvb8asdg0", "Bearer", 3600, "");
-
-        ArrayList<Token> tokens = new ArrayList<Token>();
-        tokens.add(token);
-        tokens.add(token1);
-
-        Mockito.when(spotifyServiceMock.getAllTokens()).thenReturn(tokens);
-        SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
-        ArrayList<Token> tokens1 = spotifyServiceFromContext
-            .getAllTokens();
-        
-        ArrayList<Token> defaultList = getDefaultTokenList();
-        Assertions.assertTrue(areArrayListsEqual(tokens1, defaultList));
-
-        Mockito.verify(spotifyServiceMock).getAllTokens();
-    }
-
-    @Test
-    public void shouldFailWhenTokenListsDiffer() {
-        ArrayList<Token> tokensWithDifferentTimes = getDefaultTokenListWithDifferentTime();
-
-        Mockito.when(spotifyServiceMock.getAllTokens()).thenReturn(tokensWithDifferentTimes);
-        SpotifyService spotifyServiceFromContext = context.getBean(SpotifyService.class);
-        ArrayList<Token> tokens1 = spotifyServiceFromContext
-            .getAllTokens();
-        
-        ArrayList<Token> defaultList = getDefaultTokenList();
-
-        Assertions.assertTrue(areArrayListsEqual(tokens1, defaultList));
-        Mockito.verify(spotifyServiceMock).getAllTokens();
-    }
-
-    public ArrayList<Token> getDefaultTokenList() {
-        Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 3600, "");
-        Token token1 = new Token("asagq4thq487tafadgah9rzjkhdfvb8asdg0", "Bearer", 3600, "");
-        ArrayList<Token> defaultList = new ArrayList<Token>();
-        defaultList.add(token);
-        defaultList.add(token1);
-
-        return defaultList;
-    }
-
-    public ArrayList<Token> getDefaultTokenListWithDifferentTime() {
-        Token token = new Token("asagq4thq487ta9rzjkhdfvb8asdg0", "Bearer", 600, "");
-        Token token1 = new Token("asagq4thq487tafadgah9rzjkhdfvb8asdg0", "Bearer", 600, "");
-        ArrayList<Token> defaultListWithDifferentTime = new ArrayList<Token>();
-        defaultListWithDifferentTime.add(token);
-        defaultListWithDifferentTime.add(token1);
-        
-        return defaultListWithDifferentTime;
-    }
-
-    public boolean areArrayListsEqual(ArrayList<Token> list1, ArrayList<Token> list2) {
-        for (int i = 0; i < list1.size(); i++) {
-            if (list1.get(i).getAccessToken() == list2.get(i).getAccessToken() 
-                && list1.get(i).getTokenType() == list2.get(i).getTokenType() 
-                && list1.get(i).getExpiresIn() == list2.get(i).getExpiresIn()
-                && list1.get(i).getScope() == list2.get(i).getScope()) {
-                continue;
-            } else {
-                return false;
-            }
-        }
-        return true;
     }
 
 }

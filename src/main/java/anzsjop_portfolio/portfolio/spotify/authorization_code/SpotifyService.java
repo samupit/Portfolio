@@ -34,21 +34,21 @@ public class SpotifyService {
     @Autowired
     WebClient.Builder getWebClientBuilder;
 
-    public ArrayList<Token> getAllTokens() {
-        ArrayList<Token> tokens = new ArrayList<Token>();
-        tokenRepository.findAll().forEach(token -> tokens.add(token));
-        return tokens;
-    }
-
     public Token getNewestToken() {
         Token newestToken = new Token();
         ArrayList<Token> tokens = new ArrayList<Token>();
         tokenRepository.findAll().forEach(token -> tokens.add(token));
-        newestToken = tokens
+
+        if (tokens.isEmpty()) {
+            return newestToken = null;
+        } else {
+            newestToken = tokens
             .stream()
             .max(Comparator.comparing(Token::getId))
-            .orElseThrow(NoSuchElementException::new);
+            .orElseThrow(NoSuchElementException::new);}
+
         return newestToken;
+
     }
 
     public @ResponseBody Token requestAndSaveAccessToken() {
@@ -101,16 +101,8 @@ public class SpotifyService {
         .filter(logRequest());
     }
 
-    public Token getTokenById(Integer id) {
-        return tokenRepository.findById(id).get();
-    }
-
     public void saveToken(Token token) {
         tokenRepository.save(token);
-    }
-
-    public void delete(Integer id) {
-        tokenRepository.deleteById(id);
     }
 
 }
