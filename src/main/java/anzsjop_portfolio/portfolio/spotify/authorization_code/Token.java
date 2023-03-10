@@ -15,7 +15,6 @@ public class Token {
     private String access_token;
     private String token_type;
     private int expires_in;
-    private String scope;
     private LocalDateTime expiration_time;
 
     public Token() {
@@ -26,7 +25,6 @@ public class Token {
         this.access_token = access_token;
         this.token_type = token_type;
         this.expires_in = expires_in;
-        this.scope = scope;
         this.expiration_time = LocalDateTime.now().plusSeconds(expires_in);
     }
 
@@ -34,7 +32,6 @@ public class Token {
         this.access_token = map.get("access_token").toString();
         this.token_type = map.get("token_type").toString();
         this.expires_in = Integer.valueOf(map.get("expires_in").toString());
-        this.scope = map.get("scope").toString();
         this.expiration_time = LocalDateTime.now().plusSeconds(expires_in);
         
     }
@@ -55,10 +52,6 @@ public class Token {
         return expires_in;
     }
 
-    public String getScope() {
-        return scope;
-    }
-
     public LocalDateTime getExpirationTime() {
         return expiration_time;
     }
@@ -77,10 +70,6 @@ public class Token {
 
     public void setExpiresIn(int expires_in) {
         this.expires_in = expires_in;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
     }
 
     public void setExpirationTime(LocalDateTime expiration_time) {

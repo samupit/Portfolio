@@ -40,12 +40,4 @@ public class TokenTest {
         Assertions.assertEquals(35345, token.getExpiresIn());
     }
 
-    @Test
-    public void shouldSetAndGetScope() throws Exception {
-        token.setScope("dgadfhsfg");
-
-        token.getScope();
-        Assertions.assertEquals("dgadfhsfg", token.getScope());
-    }
-
 }

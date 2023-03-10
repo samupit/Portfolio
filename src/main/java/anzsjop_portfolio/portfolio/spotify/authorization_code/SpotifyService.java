@@ -25,8 +25,8 @@ public class SpotifyService {
 
     private static final Logger logger = LogManager.getLogger(SpotifyController.class);
 
-    private static final String client_id = "your_own_client_id";
-    private static final String clientSecret = "your_own_client_secret";
+    private static final String client_id = "c251e8621f594d1b9103deede890cbbc";
+    private static final String clientSecret = "ddd24f3ba15b4237a074a7dfe1a10071";
     
     @Autowired
     TokenRepository tokenRepository;
@@ -40,12 +40,14 @@ public class SpotifyService {
         tokenRepository.findAll().forEach(token -> tokens.add(token));
 
         if (tokens.isEmpty()) {
-            return newestToken = null;
+            newestToken = null;
+            return newestToken;
         } else {
             newestToken = tokens
             .stream()
             .max(Comparator.comparing(Token::getId))
-            .orElseThrow(NoSuchElementException::new);}
+            .orElseThrow(NoSuchElementException::new);
+        }
 
         return newestToken;
 
@@ -64,6 +66,18 @@ public class SpotifyService {
         saveToken(responseToken);
 
         return responseToken;
+    }
+
+    public String getSpotifyPlaylistWithId() {
+        String playlistWithId = getWebClientBuilder.build()
+            .method(HttpMethod.GET)
+            .uri("")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .body(BodyInserters.fromFormData("grant_type", "client_credentials"))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+        return playlistWithId;
     }
 
     public HashMap<String, Object> jsonStringToMap(String jsonResponse) {
